@@ -15,15 +15,9 @@ class LinkedList(Node):
 		"""Appends node to end of linked list
 		"""
 
-		current = self.head
-		if self.head:  # linked list is not empty
-			while current.next:  # next element not null
-				current = current.next
-			current.next = node  # append new node
-			self.tail = node
-		else:  # empty linked list
-			self.head = node
-
+		current = self.tail
+		current.next = node
+		self.tail = node
 		self.length += 1
 
 
@@ -43,18 +37,19 @@ class LinkedList(Node):
 
 		current = self.head
 		current_position = 1
-		if position < 1 or position > self.length:  # invalid
+		if position < 1 or position > self.length:  # invalid position
 			return 'Invalid index. Must be more than zero and less than the length of the list...'
-		elif position > 1:  # insert
+		elif position == 1 and current:
+			self.prepend(node)
+		elif position == self.length and current:
+			self.append(node)
+		else:  # insert
 			while current_position < position and current:
 				if current_position == position - 1:
 					node.next = current.next
 					current.next = node
 				current = current.next
 				current_position += 1
-		else:  # prepend
-			node.next = self.head
-			self.head = node
 
 		self.length += 1
 
@@ -67,14 +62,20 @@ class LinkedList(Node):
 		current_position = 1
 		if position < 1 or position > self.length:  # invalid position
 			return 'Invalid index. Must be more than zero and less than the length of the list...'
-		elif position > 1:  # beyond head node
+		elif position == 1 and current:  # list head
+			self.head = current.next
+		elif position == self.length and current:  # list tail
+			while current_position < position-1 and current:
+				current = current.next
+				current_position += 1
+			current.next = None
+			self.tail = current
+		else:  # between (exclusive) head and tail
 			while current_position < position and current:
 				if current_position == position - 1:  # node before one being removed
 					current.next = current.next.next
 				current = current.next
 				current_position += 1
-		else:  # delete head node
-			self.head = current.next
 
 		self.length -= 1
 
@@ -87,14 +88,16 @@ class LinkedList(Node):
 		current_position = 1
 		if position < 1 or position > self.length:  # invalid position
 			return 'Invalid index. Must be more than zero and less than the length of the list...'
-		elif position > 1:  # beyond head node
+		elif position == 1 and current:  # list head
+			return 'Value at position {} is {}.'.format(position, self.head.value)
+		elif position == self.length and current:  # list tail
+			return 'Value at position {} is {}.'.format(position, self.tail.value)
+		else:  # between (exclusive) head and tail
 			while current_position < position and current:
 				if current_position == position - 1:  # node before one being read
 					return 'Value at position {} is {}.'.format(position, current.next.value)
 				current = current.next
 				current_position += 1
-		else:  # head node
-			return 'Value at position {} is {}.'.format(position, self.head.value)
 
 
 	def __str__(self):
@@ -126,6 +129,7 @@ if __name__ == '__main__':
 	node5 = Node(0)
 	node6 = Node(-10)
 	node7 = Node('insert')
+	node8 = Node('alex')
 
 	ll = LinkedList(node1)
 	ll.append(node2)
@@ -134,9 +138,11 @@ if __name__ == '__main__':
 	ll.prepend(node5)
 	ll.prepend(node6)
 	ll.insert(node7, 3)
+	ll.insert(node8, 5)
 
 	print(ll)
 
+	ll.remove(8)
 	ll.remove(3)
 	ll.remove(1)
 	ll.remove(1)
