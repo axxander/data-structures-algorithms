@@ -141,7 +141,7 @@ class LinkedList(Node):
 			while current.next:
 				next = current.next  # save next node
 				current.next = previous  # swap pointer to previous node
-				previous = current  # shift previous node to next node
+				previous = current  # shift previous node to current node
 				current = next  # shift current node to next node
 			current.next = previous
 			self.head = current  # tail becomes head
