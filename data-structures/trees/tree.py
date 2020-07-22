@@ -29,15 +29,9 @@ class Node:
 			left = True
 			right = True
 
-		if left and right:
-			return '{} -- {} -- {}'.format(self.left.value, self.value, self.right.value)
-		elif left:
-			return '{} -- {} -- {}'.format(self.left.value, self.value, 'null')
-		elif right:
-			return '{} -- {} -- {}'.format('null', self.value, self.right.value)
-		else:
-			return '{} -- {} -- {}'.format('null', self.value, 'null')
-
+		return '{} -- {} -- {}'.format(self.left.value if left else 'null',
+									   self.value,
+									   self.right.value if right else 'null')
 
 
 
@@ -58,7 +52,9 @@ class BinarySearchTree:
 		Args:
 			node (Node): Object of class Node.
 		"""
-		if self.root:  # tree is not empty
+		if not self.root:  # empty tree
+			self.root = node
+		else:  # non-empty tree
 			current = self.root
 			while True:
 				if current.value < node.value:  # traverse right
@@ -72,17 +68,32 @@ class BinarySearchTree:
 						current = current.left
 					else:  # is a leaf
 						current.left = node
-						return
-		else:  # empty tree
-			self.root = node
+						return		
 
 
+	def lookup(self, node):
+		"""Lookup to see if node exists in tree. 
 
-
-
-
-
-
+		Args:
+			node (Node): Object of class Node.
+		"""
+		if not self.root:  # empty tree
+			return False
+		else:  # non-empty tree
+			current = self.root
+			while True:
+				if current.value == node.value:  # value found
+					return current
+				elif current.value < node.value:  # traverse right
+					if current.right:
+						current = current.right
+					else:
+						return False
+				elif current.value >= node.value:  # traverse left
+					if current.left:
+						current = current.left
+					else:
+						return False
 
 
 if __name__ == '__main__':
@@ -93,6 +104,7 @@ if __name__ == '__main__':
 	n4 = Node(5)
 	n5 = Node(8)
 	n6 = Node(1)
+	null = Node(0)
 
 	tree = BinarySearchTree(n1)
 
@@ -105,6 +117,9 @@ if __name__ == '__main__':
 	print(n1)
 	print(n2)
 	print(n4)
+
+	x = tree.lookup(n2)
+	print(x)
 
 
 
