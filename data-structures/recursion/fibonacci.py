@@ -1,6 +1,6 @@
 def recursive_fib(n):
 	"""Recursive implementation of fibonacci sequence.
-	   Time complexity O(n).
+	   Time complexity O(2^n) -- exponential!
 
 	Args:
 		n (int): Fibonacci number.
@@ -31,13 +31,10 @@ def iterative_fib(n):
 	elif n == 2:
 		return 1
 	else:
-		prev = 1
-		prevprev = 0
-		for i in range(3, n+1):
-			current = prev + prevprev  # fib number equals sum of previous two
-			prevprev = prev
-			prev = current
-		return current
+		fnums = [0, 1]
+		for i in range(2, n):
+			fnums.append(fnums[i-1] + fnums[i-2])
+		return fnums[-1]
 
 
 if __name__ == '__main__':
