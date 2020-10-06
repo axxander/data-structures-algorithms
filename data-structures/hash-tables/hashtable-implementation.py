@@ -4,7 +4,7 @@ class Hashtable:
 		"""Define size of hashmap, i.e. allowed addresses.
 		"""
 
-		self.length = 50
+		self.length = 1
 		self.hashtable = [None for _ in range(self.length)]
 
 	def __str__(self):
