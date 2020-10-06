@@ -2,7 +2,7 @@ import sys
 import os
 
 # Required to run script from parent directory (or any other)
-sys.path.append(os.path.join(os.path.realpath(os.path.dirname(__file__)), '..'))
+sys.path.append(os.path.join(os.path.realpath(os.path.dirname(__file__)), '..', 'arrays'))
 
 import unittest
 from arrays import Array
